@@ -8,6 +8,7 @@ from slizzle.slizzle_controller import SlizzleController
 game_started = False
 menu = True
 
+
 def create_pygame_window():
     pygame.init()
     screen = pygame.display.set_mode(RESOLUTION)
@@ -19,6 +20,7 @@ def create_pygame_window():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     print("Button clicked!")
+                    running = False
 
         # Background-Color
         screen.fill(Colors.CAMBRIDGE_BLUE)
@@ -30,7 +32,8 @@ def create_pygame_window():
         pygame.draw.rect(screen, button_color, button_rect)
 
         button_label = button_font.render(button_text, True, (255, 255, 255))
-        screen.blit(button_label, (button_rect.x + button_rect.width // 2 - button_label.get_rect().width // 2, button_rect.y + button_rect.height // 2 - button_label.get_rect().height // 2))
+        screen.blit(button_label, (button_rect.x + button_rect.width // 2 - button_label.get_rect().width // 2,
+                                   button_rect.y + button_rect.height // 2 - button_label.get_rect().height // 2))
         pygame.display.flip()
     pygame.quit()
 
