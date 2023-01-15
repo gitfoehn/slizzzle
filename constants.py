@@ -1,5 +1,3 @@
-
-
 # Window Properties
 CAPTION = "Slizzle"
 WINDOW_WIDTH = 1280
@@ -9,8 +7,8 @@ LOGO = 'assets/logo/slizzle_logo_small.png'
 ICON = 'assets/logo/slizzle_icon.png'
 
 # Game Window Properties
-PUZZLE_WINDOW_WIDTH = WINDOW_WIDTH * 0.7
-PUZZLE_WINDOW_HEIGHT = WINDOW_HEIGHT * 0.7
+GAME_VIEW_RATIO = 0.7
+GAME_VIEW_RESOLUTION = [i * GAME_VIEW_RATIO for i in RESOLUTION]
 
 # Game Properties
 TILE_AMOUNT_HORIZONTAL = 3
