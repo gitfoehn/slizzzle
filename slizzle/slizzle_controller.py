@@ -14,8 +14,8 @@ class SlizzleController:
         self.image = None
         self.model = None
         self.view = None
-
-        self.puzzle_resolution = (4, 3)  # (width, height)
+        # TODO: Get puzzle_resolution rom settings
+        self.puzzle_resolution = (3, 3)  # (width, height)
 
     def load_image(self, image_url: str) -> None:
         self.image = Image.open(image_url)
@@ -46,7 +46,7 @@ class SlizzleController:
         return tiles
 
     def start_game(self) -> None:
-        self.load_image('assets/bregenzerwald.jpg')
+        self.load_image('assets/logo/slizzle_logo_small.png')
         tiles = self.slice_image(self.puzzle_resolution)
 
         self.model = SlizzleModel(self.puzzle_resolution, tiles)

@@ -1,4 +1,3 @@
-from random import shuffle
 from slizzle.model.slizzle_tile import SlizzleTile
 from slizzle.model.slizzle_grid import SlizzleGrid
 
@@ -17,16 +16,16 @@ class SlizzleModel:
         for tile in self.tiles:
             tile.is_visible = True
 
-    def shuffle_tiles(self) -> None:
-        shuffle(self.tiles)
-
     def start_game(self) -> None:
         self.hide_last_tile()
-        self.shuffle_tiles()
         self.grid = SlizzleGrid(self.width, self.height, self.tiles)
+        # TODO: Get from settings
+        self.grid.shuffle(1)
 
-    def grid_swap(self, clicked_cell_pos: (int, int)) -> bool:
-        return self.grid.try_swap(clicked_cell_pos)
+    def grid_swap(self, clicked_cell_pos: (int, int)) -> None:
+        self.grid.try_swap(clicked_cell_pos)
+        if self.grid.check_tiles():
+            print(f'Du geile Sau')
 
     def game_end(self) -> None:
         self.show_all_tiles()
