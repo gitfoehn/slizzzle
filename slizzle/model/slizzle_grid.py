@@ -8,6 +8,10 @@ class SlizzleGrid:
         self.grid = self.tiles_to_grid(tiles)
 
     def tiles_to_grid(self, tiles_list: list[SlizzleTile]) -> list[list[SlizzleTile]]:
+        """ Returns a [[SlizzleTile],...]
+
+        Used to add Tiles to the X by X Grid.
+        """
         grid = []
 
         for w in range(self.width):
@@ -38,6 +42,7 @@ class SlizzleGrid:
         self.swap(cell_pos, empty_cell)
 
     def swap(self, cell_pos: (int, int), empty_pos: (int, int)) -> None:
+        """ Swaps Clicked Cell with Empty cell. """
         clicked_tile = self.grid[cell_pos[0]][cell_pos[1]]
         empty_tile = self.grid[empty_pos[0]][empty_pos[1]]
 
@@ -45,6 +50,7 @@ class SlizzleGrid:
         self.grid[empty_pos[0]][empty_pos[1]] = clicked_tile
 
     def check_tiles(self) -> bool:
+        """ Checks if all tiles are in the right order. """
         for h in range(self.height):
             for w in range(self.width):
                 if (w, h) != self.grid[w][h].position:
