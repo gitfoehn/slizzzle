@@ -8,6 +8,7 @@ class SlizzleModel:
         self.height = size[1]
         self.tiles = tiles
         self.grid = None
+        self.moves = 0
 
     def hide_last_tile(self) -> None:
         self.tiles[len(self.tiles)-1].is_visible = False
@@ -30,3 +31,9 @@ class SlizzleModel:
 
     def game_end(self) -> None:
         self.show_all_tiles()
+
+    def increment_moves(self):
+        self.moves += 1
+
+    def reset_moves(self):
+        self.moves = 0

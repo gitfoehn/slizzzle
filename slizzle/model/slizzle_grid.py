@@ -50,6 +50,7 @@ class SlizzleGrid:
             return False
 
         self.swap(cell_pos, empty_cell)
+        return True
 
     def swap(self, cell_pos: (int, int), empty_pos: (int, int)) -> None:
         """ Swaps Clicked Cell with Empty cell. """
