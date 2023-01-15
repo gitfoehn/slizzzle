@@ -20,12 +20,13 @@ class SlizzleModel:
         self.hide_last_tile()
         self.grid = SlizzleGrid(self.width, self.height, self.tiles)
         # TODO: Get from settings
-        self.grid.shuffle(1)
+        self.grid.shuffle(5)
 
     def grid_swap(self, clicked_cell_pos: (int, int)) -> None:
-        self.grid.try_swap(clicked_cell_pos)
-        if self.grid.check_tiles():
-            print(f'Du geile Sau')
+        if self.grid.try_swap(clicked_cell_pos):
+            self.increment_moves()
+            if self.grid.check_tiles():
+                print(f'Du geile Sau hast es in {self.moves} Zügen geschafft')
 
     def game_end(self) -> None:
         self.show_all_tiles()
