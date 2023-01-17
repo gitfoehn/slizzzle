@@ -1,14 +1,14 @@
 import sys
+from tkinter import filedialog as fd
 
 import pygame
 from PIL import Image
-from tkinter import filedialog as fd
 
 import constants
 from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT
+from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
-from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.pygame_view import View
 
 
@@ -57,7 +57,8 @@ class SlizzleController:
 		for w in range(tile_amount[0]):
 			for h in range(tile_amount[1]):
 				# TODO Crop to optimal size
-				pil_img = self.image.crop((w * tile_width, h * tile_height, (w + 1) * tile_width, (h + 1) * tile_height))
+				pil_img = self.image.crop(
+					(w * tile_width, h * tile_height, (w + 1) * tile_width, (h + 1) * tile_height))
 				img = convert_to_pygame_surface(pil_img)
 				tile = SlizzleTile(img, (w, h))
 				tiles.append(tile)
@@ -74,6 +75,7 @@ class SlizzleController:
 			self.puzzle_resolution = constants.DIFFICULTIES[self.selected_diff].res
 			self.load_image(self.image)
 			print(f'Added image Path {self.image}')
+
 	def open_menu(self) -> None:
 		while self.inMenu:
 			for event in pygame.event.get():
@@ -92,7 +94,6 @@ class SlizzleController:
 						self.load_image_path()
 
 			self.view.show_menu_view(constants.DIFFICULTIES[self.selected_diff].name)
-
 
 	def start_game(self) -> None:
 		tiles = self.slice_image(self.puzzle_resolution)
@@ -120,8 +121,7 @@ class SlizzleController:
 	def get_puzzle_coord_from_pos(self, pos: (int, int)) -> (int, int):
 		puzzle_view_size = self.image.size
 		# tile.w = view.w / puzzle_res.w
-		tile_size = tuple((puzzle_view_size[0] / self.puzzle_resolution[0],
-						   puzzle_view_size[1] / self.puzzle_resolution[1]))
+		tile_size = tuple((puzzle_view_size[0] / self.puzzle_resolution[0], puzzle_view_size[1] / self.puzzle_resolution[1]))
 		# pos.x % tile.w
 		x = int(pos[0] // tile_size[0])
 		y = int(pos[1] // tile_size[1])

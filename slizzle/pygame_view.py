@@ -1,8 +1,8 @@
 import pygame
 
-from slizzle.model.slizzle_tile import SlizzleTile
-from slizzle.model.slizzle_grid import SlizzleGrid
 from constants import CAPTION, ICON, MENU_RESOLUTION, Colors
+from slizzle.model.slizzle_grid import SlizzleGrid
+from slizzle.model.slizzle_tile import SlizzleTile
 
 
 class View:
@@ -28,7 +28,6 @@ class View:
         self.button_start = Button("START", Colors.PASTEL_YELLOW, (200, 450), 100, 40)
         self.button_difficulty = Button(difficulty_text, Colors.PASTEL_YELLOW, (200, 400), 100, 40)
 
-
         self.button_start.draw(self.display)
         self.button_difficulty.draw(self.display)
         self.button_image_path.draw(self.display)
@@ -46,7 +45,7 @@ class View:
             for y in range(len(grid.grid[x])):
                 tile = grid.grid[x][y]
                 if tile.is_visible:
-                    self.draw_tile(tile, (x*tile.image.get_width(), y*tile.image.get_height()))
+                    self.draw_tile(tile, (x * tile.image.get_width(), y * tile.image.get_height()))
         pygame.display.flip()
 
     def draw_tile(self, tile: SlizzleTile, pos: (int, int)):
@@ -63,6 +62,7 @@ class Button:
     Helper Class to Build Buttons.
     -
     """
+
     def __init__(self, label: str, color: (int, int, int), pos: (int, int), width: int, height: int):
         self.label = label
         self.color = color
@@ -77,7 +77,5 @@ class Button:
         label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.BLACK)
 
         pygame.draw.rect(surface, Colors.PASTEL_YELLOW, self.rect)
-        surface.blit(label_elem, (self.rect.x + self.rect.width // 2 - label_elem.get_rect().width // 2, self.rect.y + self.rect.height // 2 - label_elem.get_rect().height // 2))
-
-
-
+        surface.blit(label_elem, (self.rect.x + self.rect.width // 2 - label_elem.get_rect().width // 2,
+                                  self.rect.y + self.rect.height // 2 - label_elem.get_rect().height // 2))
