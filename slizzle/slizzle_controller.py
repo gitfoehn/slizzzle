@@ -3,6 +3,7 @@ import sys
 import pygame
 from PIL import Image
 
+import constants
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
 from pil_to_pygame_image import convert_to_pygame_surface
@@ -13,7 +14,10 @@ class SlizzleController:
     def __init__(self):
         self.image = None
         self.model = None
-        self.view = None
+        self.view = View()
+
+        self.inMenu = True
+        self.selected_diff = 0
         # TODO: Get puzzle_resolution rom settings
         self.puzzle_resolution = (3, 3)  # (width, height)
 
@@ -45,30 +49,47 @@ class SlizzleController:
 
         return tiles
 
+    def open_menu(self) -> None:
+        while self.inMenu:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if self.view.button_start.rect.collidepoint(event.pos):
+                        print('Start button clicked')
+                        self.inMenu = False
+                        self.puzzle_resolution = constants.DIFFICULTIES[self.selected_diff].res
+
+                    if self.view.button_difficulty.rect.collidepoint(event.pos):
+                        print('Change difficulty')
+                        self.selected_diff = (self.selected_diff + 1) % len(constants.DIFFICULTIES)
+
+            self.view.show_menu_view(constants.DIFFICULTIES[self.selected_diff].name)
+
     def start_game(self) -> None:
         self.load_image('assets/logo/slizzle_logo_small.png')
         tiles = self.slice_image(self.puzzle_resolution)
 
-        self.model = SlizzleModel(self.puzzle_resolution, tiles)
-        self.view = View(self.model, self.image.size)
+        self.model = SlizzleModel(tiles, constants.DIFFICULTIES[self.selected_diff])
+        self.view.model = self.model
 
         self.model.start_game()
         self.game_loop()
 
     def game_loop(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    pos = pygame.mouse.get_pos()
-                    cell = self.get_puzzle_coord_from_pos(pos)
-                    print(f'Left Mouse Button was clicked at location {pos} and grid cell {cell}')
-                    # For all Recs check if mouse pos during click is colliding with Rec
-                    # try to move tile
-                    self.model.grid_swap(cell)
+            self.event_handler()
+            self.view.show_game_view(self.image.size)
 
-            self.view.show_game_view()
+    def event_handler(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+                cell = self.get_puzzle_coord_from_pos(pos)
+                print(f'Left Mouse Button was clicked at location {pos} and grid cell {cell}')  # ToDo: Debug
+                self.model.grid_swap(cell)
 
     def get_puzzle_coord_from_pos(self, pos: (int, int)) -> (int, int):
         puzzle_view_size = self.image.size
@@ -79,4 +100,3 @@ class SlizzleController:
         y = int(pos[1] // tile_size[1])
 
         return tuple((x, y))
-

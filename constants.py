@@ -1,3 +1,5 @@
+from slizzle.model.slizzle_model import Difficulty
+
 # Window Properties
 CAPTION = "Slizzle"
 WINDOW_WIDTH = 1280
@@ -14,6 +16,20 @@ GAME_VIEW_RESOLUTION = [i * GAME_VIEW_RATIO for i in RESOLUTION]
 TILE_AMOUNT_HORIZONTAL = 3
 TILE_AMOUNT_VERTICAL = 3
 
+MENU_RESOLUTION = (500, 500)
+
+DIFFICULTIES = (Difficulty("EASY", 3, 3, 15),
+                Difficulty("MEDIUM", 4, 4, 40),
+                Difficulty("HARD", 5, 5, 100),
+                Difficulty("INSANE", 8, 8, 400))
+
+
 # Colors
-CAMBRIDGE_BLUE = (195, 218, 195)  # Background Color
-PASTEL_YELLOW = (250, 250, 153)
+class Colors:
+    CAMBRIDGE_BLUE = (195, 218, 195)  # Background Color
+    PASTEL_YELLOW = (250, 250, 153)  # Button Colors
+    BLACK = (0, 0, 0)
+
+
+
+

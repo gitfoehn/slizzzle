@@ -4,6 +4,16 @@ from slizzle.model.slizzle_tile import SlizzleTile
 
 
 class SlizzleGrid:
+    """
+    SlizzleGrid handles everything to do with the Playing field
+    - Arranging Tiles in Grid.
+    - Checking if Clicked Tile is able to swap with an empty Tile.
+    - Swapping Clicked Tile with empty Tile.
+    - Checking if all Tiles are in the Right oder.
+    - Fining empty Tile.
+    - Shuffle Algorythm to Shuffle all Tiles (Reduction of impossible Shuffles).
+    """
+
     def __init__(self, width: int, height: int, tiles: list[SlizzleTile]):
         self.width = width
         self.height = height
@@ -69,7 +79,7 @@ class SlizzleGrid:
         return True
 
     def shuffle(self, swap_count: int) -> None:
-        """ Shuffles tiles. """
+        """ Shuffle Algorythm to Shuffle all Tiles (Reduction of impossible Shuffles). """
         directions = 4
         # get empty coordinates
         empty_tile = self.find_empty_tile()
@@ -98,6 +108,7 @@ class SlizzleGrid:
                 swap_count -= 1
 
     def find_empty_tile(self) -> (int, int):
+        """ Returns the empty Tile """
         for h in range(self.height):
             for w in range(self.width):
                 if not self.grid[h][w].is_visible:
