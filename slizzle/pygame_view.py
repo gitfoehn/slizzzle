@@ -73,5 +73,7 @@ class Button:
         label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.BLACK)
 
         pygame.draw.rect(surface, Colors.PASTEL_YELLOW, self.rect)
-        surface.blit(label_elem, self.rect)
+        surface.blit(label_elem, (self.rect.x + self.rect.width // 2 - label_elem.get_rect().width // 2, self.rect.y + self.rect.height // 2 - label_elem.get_rect().height // 2))
+
+
 
