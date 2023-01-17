@@ -12,6 +12,7 @@ class View:
 
         self.button_start = None
         self.button_difficulty = None
+        self.button_image_path = None
 
         pygame.init()
         pygame.display.set_caption(CAPTION)
@@ -23,11 +24,14 @@ class View:
         self.display = pygame.display.set_mode(MENU_RESOLUTION)
         self.display.fill(Colors.CAMBRIDGE_BLUE)
 
+        self.button_image_path = Button("LOAD IMAGE", Colors.PASTEL_YELLOW, (200, 350), 200, 40)
         self.button_start = Button("START", Colors.PASTEL_YELLOW, (200, 450), 100, 40)
         self.button_difficulty = Button(difficulty_text, Colors.PASTEL_YELLOW, (200, 400), 100, 40)
 
+
         self.button_start.draw(self.display)
         self.button_difficulty.draw(self.display)
+        self.button_image_path.draw(self.display)
 
         pygame.display.flip()
 

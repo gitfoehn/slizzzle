@@ -18,10 +18,15 @@ TILE_AMOUNT_VERTICAL = 3
 
 MENU_RESOLUTION = (500, 500)
 
+# Other
 DIFFICULTIES = (Difficulty("EASY", 3, 3, 15),
                 Difficulty("MEDIUM", 4, 4, 40),
                 Difficulty("HARD", 5, 5, 100),
                 Difficulty("INSANE", 8, 8, 400))
+
+SCALE_FACTOR = 0.95
+MAX_WIDTH = WINDOW_WIDTH
+MAX_HEIGHT = WINDOW_HEIGHT
 
 
 # Colors
@@ -29,7 +34,3 @@ class Colors:
     CAMBRIDGE_BLUE = (195, 218, 195)  # Background Color
     PASTEL_YELLOW = (250, 250, 153)  # Button Colors
     BLACK = (0, 0, 0)
-
-
-
-
