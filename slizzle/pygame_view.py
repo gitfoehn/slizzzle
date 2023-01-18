@@ -49,7 +49,8 @@ class View:
         pygame.display.flip()
 
     def draw_tile(self, tile: SlizzleTile, pos: (int, int)):
-        image = tile.image
+        # TODO ggf. blit image_boarder only when not all tiles are visible else blit image
+        image = tile.image_border
 
         self.display.blit(image, pos)
 

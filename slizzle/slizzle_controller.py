@@ -2,7 +2,7 @@ import sys
 from tkinter import filedialog as fd
 
 import pygame
-from PIL import Image
+from PIL import Image, ImageOps
 
 import constants
 from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT
@@ -59,8 +59,12 @@ class SlizzleController:
 				# TODO Crop to optimal size
 				pil_img = self.image.crop(
 					(w * tile_width, h * tile_height, (w + 1) * tile_width, (h + 1) * tile_height))
+				tile_w, tile_h = pil_img.size
+				pil_img_bord = ImageOps.expand(pil_img, border=2, fill='#CD5C5C').resize((tile_w,tile_h))
+
 				img = convert_to_pygame_surface(pil_img)
-				tile = SlizzleTile(img, (w, h))
+				bord_img = convert_to_pygame_surface(pil_img_bord)
+				tile = SlizzleTile(bord_img, img, (w, h))
 				tiles.append(tile)
 
 		return tiles
