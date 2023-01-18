@@ -34,12 +34,13 @@ class View:
 
         pygame.display.flip()
 
-    def show_game_view(self, resolution: (int, int)):
+    def init_game_view(self, resolution: (int, int)):
         self.display = pygame.display.set_mode(resolution)
-        self.display.fill(Colors.CAMBRIDGE_BLUE)
         self.update_grid()
 
     def update_grid(self):
+        self.display.fill(Colors.CAMBRIDGE_BLUE)
+
         grid = self.model.grid
         for x in range(len(grid.grid)):
             for y in range(len(grid.grid[x])):
