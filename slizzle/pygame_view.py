@@ -20,11 +20,12 @@ class View:
 
         pygame.display.set_icon(icon)
 
-    def show_menu_view(self, difficulty_text: str):
+    def init_menu_view(self):
         self.display = pygame.display.set_mode(MENU_RESOLUTION)
-        self.display.fill(Colors.CAMBRIDGE_BLUE)
 
-        self.button_image_path = Button("LOAD IMAGE", Colors.PASTEL_YELLOW, (200, 350), 200, 40)
+    def show_menu_view(self, difficulty_text: str):
+        self.display.fill(Colors.CAMBRIDGE_BLUE)
+        self.button_image_path = Button("LOAD IMAGE", Colors.PASTEL_YELLOW, (150, 350), 200, 40)
         self.button_start = Button("START", Colors.PASTEL_YELLOW, (200, 450), 100, 40)
         self.button_difficulty = Button(difficulty_text, Colors.PASTEL_YELLOW, (200, 400), 100, 40)
 

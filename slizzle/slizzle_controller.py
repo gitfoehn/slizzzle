@@ -75,6 +75,7 @@ class SlizzleController:
             print(f'Added image Path {self.image}')
 
     def open_menu(self) -> None:
+        self.view.init_menu_view()
         while self.inMenu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
