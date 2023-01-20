@@ -1,8 +1,7 @@
 class SlizzleTile:
-
-	def __init__(self,image_border, image, position: (int, int)):
-		self.image_border = image_border
+	def __init__(self, image, image_border, position: (int, int)):
 		self.image = image
+		self.image_border = image_border
 		self.position = position
 		self.is_visible = True
 
