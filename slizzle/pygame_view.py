@@ -1,7 +1,6 @@
 import pygame
 
-from constants import CAPTION, ICON, MENU_RESOLUTION, Colors
-from slizzle.model.slizzle_grid import SlizzleGrid
+from constants import CAPTION, ICON, MENU_RESOLUTION, Colors, SCHRIFTZUG
 from slizzle.model.slizzle_tile import SlizzleTile
 
 
@@ -13,6 +12,7 @@ class View:
         self.button_start = None
         self.button_difficulty = None
         self.button_image_path = None
+        self.button_back_to_menu = None
 
         pygame.init()
         pygame.display.set_caption(CAPTION)
@@ -23,15 +23,24 @@ class View:
     def init_menu_view(self):
         self.display = pygame.display.set_mode(MENU_RESOLUTION)
 
-    def show_menu_view(self, difficulty_text: str):
-        self.display.fill(Colors.CAMBRIDGE_BLUE)
-        self.button_image_path = Button("LOAD IMAGE", Colors.PASTEL_YELLOW, (150, 350), 200, 40)
-        self.button_start = Button("START", Colors.PASTEL_YELLOW, (200, 450), 100, 40)
-        self.button_difficulty = Button(difficulty_text, Colors.PASTEL_YELLOW, (200, 400), 100, 40)
+    def show_menu_view(self, difficulty_text: str, image):
+
+        self.display.fill(Colors.SHADOWN_PLANET)
+
+        self.button_image_path = Button("LOAD IMAGE", Colors.PINK_BYTE, (150, 350), 200, 40)
+        self.button_start = Button("START", Colors.PINK_BYTE, (200, 450), 100, 40)
+        self.button_difficulty = Button(difficulty_text, Colors.PINK_BYTE, (200, 400), 100, 40)
 
         self.button_start.draw(self.display)
         self.button_difficulty.draw(self.display)
         self.button_image_path.draw(self.display)
+
+        logo = pygame.image.load(SCHRIFTZUG)
+        screen_width, screen_height = pygame.display.get_surface().get_size()
+        offset = 100
+        self.display.blit(logo,
+                          (screen_width // 2 - logo.get_width() // 2,
+                           (screen_height // 2) - offset - logo.get_height() // 2))
 
         pygame.display.flip()
 
@@ -56,16 +65,42 @@ class View:
 
         self.display.blit(image, pos)
 
-    def show_grid(self, grid: SlizzleGrid):
-        pass
+    def show_endscreen(self, window_dimensions: (int, int)) -> None:
+        window_x, window_y = window_dimensions
 
+        label_text = f"You made it in {self.model.moves} move(s)."
+        label_banner = pygame.font.Font(None, 36).render(label_text, True, Colors.MIDNIGHT_DREAMS)
+
+        banner_width = label_banner.get_rect().width + 20
+        banner_height = label_banner.get_rect().height + 20
+
+        banner_x = window_x // 2 - banner_width // 2
+        banner_y = window_y // 2 - banner_height // 2
+
+        banner = pygame.Rect(banner_x, banner_y, banner_width, banner_height)
+
+        x_label = banner_x + banner_width // 2 - label_banner.get_rect().width // 2
+        y_label = banner_y + banner_height // 2 - label_banner.get_rect().height // 2
+
+        button_width = 200
+        button_height = 40
+
+        x_button = window_x // 2 - button_width // 2
+        y_button = banner_y + banner_height + 10
+
+        pygame.draw.rect(self.display, Colors.POOL_BLUE, banner)
+
+        self.display.blit(label_banner, (x_label, y_label))
+        button_text = f"BACK TO MENU"
+        self.button_back_to_menu = Button(button_text, Colors.POOL_BLUE, (x_button, y_button), button_width, button_height)
+        self.button_back_to_menu.draw(self.display)
+        pygame.display.flip()
 
 class Button:
     """
     Helper Class to Build Buttons.
     -
     """
-
     def __init__(self, label: str, color: (int, int, int), pos: (int, int), width: int, height: int):
         self.label = label
         self.color = color
@@ -77,8 +112,11 @@ class Button:
         self.rect = pygame.Rect(self.x, self.y, width, height)
 
     def draw(self, surface: pygame.Surface):
-        label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.BLACK)
+        label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.MIDNIGHT_DREAMS)
 
-        pygame.draw.rect(surface, Colors.PASTEL_YELLOW, self.rect)
+        pygame.draw.rect(surface, Colors.PINK_BYTE, self.rect)
         surface.blit(label_elem, (self.rect.x + self.rect.width // 2 - label_elem.get_rect().width // 2,
                                   self.rect.y + self.rect.height // 2 - label_elem.get_rect().height // 2))
+
+
+

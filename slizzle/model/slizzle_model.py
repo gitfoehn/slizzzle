@@ -14,6 +14,7 @@ class SlizzleModel:
 		self.grid = None
 		self.moves = 0
 		self.shuffles = difficulty.shuffle_amount
+		self.is_running = False
 
 	def hide_last_tile(self) -> None:
 		"""
@@ -31,6 +32,7 @@ class SlizzleModel:
 			tile.is_visible = True
 
 	def start_game(self) -> None:
+		self.is_running = True
 		self.hide_last_tile()
 		self.grid = SlizzleGrid(self.width, self.height, self.tiles)
 		self.grid.shuffle(self.shuffles)
@@ -43,6 +45,7 @@ class SlizzleModel:
 
 	def game_end(self) -> None:
 		self.show_all_tiles()
+		self.is_running = False
 		print(f'Du geile Sau hast es in {self.moves} Zügen geschafft')
 
 	def increment_moves(self):
