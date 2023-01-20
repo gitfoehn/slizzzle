@@ -7,7 +7,7 @@ class SlizzleModel:
 	Slizzle Model
 	"""
 
-	def __init__(self, tiles: list[SlizzleTile], difficulty):
+	def __init__(self, tiles: list[SlizzleTile] | None, difficulty):
 		self.width = difficulty.tile_amount_horizontal
 		self.height = difficulty.tile_amount_vertical
 		self.tiles = tiles

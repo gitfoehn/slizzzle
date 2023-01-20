@@ -5,7 +5,7 @@ import pygame
 from PIL import Image, ImageOps
 
 import constants
-from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, Colors
+from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, Colors, DEFAULT_PICTURE
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
@@ -19,7 +19,7 @@ def add_boarder_to_tile(img):
 
 class SlizzleController:
 	def __init__(self):
-		self.image = None
+		self.image = Image.open(DEFAULT_PICTURE)
 		self.model = None
 		self.view = View()
 
@@ -78,7 +78,7 @@ class SlizzleController:
 				bord_img = convert_to_pygame_surface(pil_img_bord)
 
 				img = convert_to_pygame_surface(pil_img)
-				tile = SlizzleTile(img, bord_img, (w, h))
+				tile = SlizzleTile(self.model, img, bord_img, (w, h))
 				tiles.append(tile)
 
 		return tiles
@@ -115,8 +115,9 @@ class SlizzleController:
 
 	def start_game(self) -> None:
 		self.puzzle_resolution = constants.DIFFICULTIES[self.selected_diff].res
+		self.model = SlizzleModel(None, constants.DIFFICULTIES[self.selected_diff])
 		tiles = self.slice_image(self.puzzle_resolution)
-		self.model = SlizzleModel(tiles, constants.DIFFICULTIES[self.selected_diff])
+		self.model.tiles = tiles
 		self.view.model = self.model
 
 		self.model.start_game()
@@ -125,7 +126,7 @@ class SlizzleController:
 
 	def end_game(self) -> None:
 		while not self.inMenu and not self.running:
-			self.view.show_endscreen(self.image.size)
+			self.view.show_end_screen(self.image.size)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					sys.exit()

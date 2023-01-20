@@ -1,8 +1,8 @@
 import pygame
 
 from constants import CAPTION, ICON, MENU_RESOLUTION, Colors, SCHRIFTZUG
+from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_tile import SlizzleTile
-
 
 class View:
     def __init__(self):
@@ -23,7 +23,7 @@ class View:
     def init_menu_view(self):
         self.display = pygame.display.set_mode(MENU_RESOLUTION)
 
-    def show_menu_view(self, difficulty_text: str, image):
+    def show_menu_view(self, difficulty_text: str, default_image):
 
         self.display.fill(Colors.SHADOWN_PLANET)
 
@@ -37,18 +37,25 @@ class View:
 
         logo = pygame.image.load(SCHRIFTZUG)
         screen_width, screen_height = pygame.display.get_surface().get_size()
-        offset = 100
-        self.display.blit(logo,
-                          (screen_width // 2 - logo.get_width() // 2,
-                           (screen_height // 2) - offset - logo.get_height() // 2))
+
+        logo_x = screen_width // 2 - logo.get_width() // 2
+        logo_y = 30
+
+        self.display.blit(logo, (logo_x, logo_y))
+        preview = default_image.copy()
+
+        preview.thumbnail((200, 200))
+
+        pic = convert_to_pygame_surface(preview)
+        self.display.blit(pic, (250 - pic.get_rect().width // 2, logo_y + logo.get_rect().height + 20))
 
         pygame.display.flip()
 
-    def init_game_view(self, resolution: (int, int)):
+    def init_game_view(self, resolution: (int, int)) -> None:
         self.display = pygame.display.set_mode(resolution)
         self.update_grid()
 
-    def update_grid(self):
+    def update_grid(self) -> None:
         self.display.fill(Colors.CAMBRIDGE_BLUE)
 
         grid = self.model.grid
@@ -61,11 +68,11 @@ class View:
 
     def draw_tile(self, tile: SlizzleTile, pos: (int, int)):
         # TODO ggf. blit image_boarder only when not all tiles are visible else blit image
-        image = tile.image_border
+        image = tile.get_image()
 
         self.display.blit(image, pos)
 
-    def show_endscreen(self, window_dimensions: (int, int)) -> None:
+    def show_end_screen(self, window_dimensions: (int, int)) -> None:
         window_x, window_y = window_dimensions
 
         label_text = f"You made it in {self.model.moves} move(s)."
@@ -96,6 +103,7 @@ class View:
         self.button_back_to_menu.draw(self.display)
         pygame.display.flip()
 
+
 class Button:
     """
     Helper Class to Build Buttons.
@@ -111,7 +119,7 @@ class Button:
         self.height = height
         self.rect = pygame.Rect(self.x, self.y, width, height)
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, surface: pygame.Surface) -> None:
         label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.MIDNIGHT_DREAMS)
 
         pygame.draw.rect(surface, Colors.PINK_BYTE, self.rect)
