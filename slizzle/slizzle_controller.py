@@ -2,15 +2,18 @@ import sys
 from tkinter import filedialog as fd
 
 import pygame
-from PIL import Image
+from PIL import Image, ImageOps
 
 import constants
-from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT
+from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, Colors
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
 from slizzle.pygame_view import View
 
+def add_boarder_to_tile(img):
+    tile_w, tile_h = img.size
+    return ImageOps.expand(img, border=constants.BOARDER_SIZE, fill=Colors.BLACK).resize((tile_w, tile_h))
 
 class SlizzleController:
     def __init__(self):
@@ -58,8 +61,13 @@ class SlizzleController:
             for h in range(tile_amount[1]):
                 pil_img = self.image.crop(
                     (w * tile_width, h * tile_height, (w + 1) * tile_width, (h + 1) * tile_height))
+
+                # Creates bordered Version
+                pil_img_bord = add_boarder_to_tile(pil_img)
+                bord_img = convert_to_pygame_surface(pil_img_bord)
+
                 img = convert_to_pygame_surface(pil_img)
-                tile = SlizzleTile(img, (w, h))
+                tile = SlizzleTile(img, bord_img, (w, h))
                 tiles.append(tile)
 
         return tiles
