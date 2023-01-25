@@ -5,7 +5,7 @@ import pygame
 from PIL import Image, ImageOps
 
 import constants
-from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, Colors, DEFAULT_PICTURE
+from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, DEFAULT_PICTURE, GRID_COLOR
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
@@ -14,7 +14,7 @@ from slizzle.pygame_view import View
 
 def add_boarder_to_tile(img):
 	tile_w, tile_h = img.size
-	return ImageOps.expand(img, border=constants.BOARDER_SIZE, fill=Colors.BLACK).resize((tile_w, tile_h))
+	return ImageOps.expand(img, border=constants.BOARDER_SIZE, fill=GRID_COLOR).resize((tile_w, tile_h))
 
 
 class SlizzleController:

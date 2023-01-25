@@ -1,10 +1,8 @@
 import pygame
 
-from constants import CAPTION, ICON, MENU_RESOLUTION, SCHRIFTZUG, BACKGROUND_COLOR, BUTTON_COLOR,\
-    SECONDARY_BUTTON_COLOR, FONT_COLOR, MENU_BACKGROUND_COLOR
+from constants import CAPTION, ICON, MENU_RESOLUTION, GAME_NAME, MENU_BACKGROUND_COLOR,GAME_BACKGROUND_COLOR,BUTTON_COLOR,SECONDARY_BUTTON_COLOR,FONT_COLOR
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_tile import SlizzleTile
-
 
 class View:
     def __init__(self):
@@ -37,7 +35,7 @@ class View:
         self.button_difficulty.draw(self.display)
         self.button_image_path.draw(self.display)
 
-        logo = pygame.image.load(SCHRIFTZUG)
+        logo = pygame.image.load(GAME_NAME)
         screen_width, screen_height = pygame.display.get_surface().get_size()
 
         logo_x = screen_width // 2 - logo.get_width() // 2
@@ -58,7 +56,7 @@ class View:
         self.update_grid()
 
     def update_grid(self) -> None:
-        self.display.fill(BACKGROUND_COLOR)
+        self.display.fill(GAME_BACKGROUND_COLOR)
 
         grid = self.model.grid
         for x in range(len(grid.grid)):
