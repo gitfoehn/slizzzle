@@ -13,15 +13,14 @@ from slizzle.pygame_view import View
 
 class SlizzleController:
 	"""
-	SlizzleController is the Controller of the Slizzle Application according to the MVC Pattern
+	SlizzleController is the controller of the Slizzle application according to the MVC pattern.
 
-	The Controller handles the Events that occur during Runtime
-	It also handles the flow of the Application
+	The Controller handles the Events that occur during Runtime.
+	It also handles the flow of the Application.
 	"""
-
 	def __init__(self):
 		"""
-		Creates a new Controller with a default Image and a base View
+		Creates a new Controller with a default Image and a base View.
 		"""
 		self.image = Image.open(DEFAULT_PICTURE)
 		self.model = None
@@ -35,20 +34,20 @@ class SlizzleController:
 	def start(self) -> None:
 		"""
 		Starts the Controller and checks in which state the application is in and executes the specific code for this
-		state. States being like inMenu or inGame or endGame
+		state. States being like 'inMenu' or 'inGame' or 'endGame'.
 		"""
 		while True:
 			if self.inMenu and not self.running:		# inMenu
 				self.open_menu()
 			elif not self.inMenu and self.running:		# inGame
 				self.start_game()
-			elif not self.inMenu and not self.running:	# endGame
+			elif not self.inMenu and not self.running:  # endGame
 				self.end_game()
 
 	def open_menu(self) -> None:
 		"""
 		This function handles the menu screen when the Application is in the state 'inMenu'.
-		It calls the view to show the menu screen and contains event listeners for button presses
+		It calls the view to show the menu screen and contains event listeners for button presses.
 		"""
 		self.view.init_menu_view()
 		while self.inMenu:
@@ -88,7 +87,7 @@ class SlizzleController:
 	def end_game(self) -> None:
 		"""
 		This function handles the end screen when the Application is in the state 'endGame'.
-		It calls the view to show the end screen and contains event listeners for button presses
+		It calls the view to show the end screen and contains event listeners for button presses.
 		"""
 		while not self.inMenu and not self.running:
 			self.view.show_end_screen(self.image.size)
@@ -100,19 +99,19 @@ class SlizzleController:
 						self.running = False
 						self.inMenu = True
 
-	def game_loop(self):
+	def game_loop(self) -> None:
 		"""
-		The gameloop calls the event handler and tells the view to update
-		Keeps track of the model.is_running state to set the state of the controller to 'endGame'
+		The gameloop calls the event handler and tells the view to update.
+		Keeps track of the model.is_running state to set the state of the controller to 'endGame'.
 		"""
 		while self.model.is_running:
 			self.event_handler()
 			self.view.update_grid()
 		self.running = False
 
-	def event_handler(self):
+	def event_handler(self) -> None:
 		"""
-		Handles the events that happen during the game e.g. like clicking on a puzzle tile
+		Handles the events that happen during the game e.g. like clicking on a puzzle tile.
 		"""
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -124,6 +123,9 @@ class SlizzleController:
 				self.model.grid_swap(cell)
 
 	def get_puzzle_coord_from_pos(self, pos: (int, int)) -> (int, int):
+		"""
+		Maps the mouse coordinates in the game screen to the corresponding tile coordinates in the puzzle grid.
+		"""
 		puzzle_view_size = self.image.size
 		# tile.w = view.w / puzzle_res.w
 		tile_size = tuple(
@@ -135,6 +137,9 @@ class SlizzleController:
 		return tuple((x, y))
 
 	def select_image(self) -> None:
+		"""
+		Opens up a filechooser and loads the selected image.
+		"""
 		image_path = fd.askopenfilename(
 			initialdir="/",
 			title="Choose picture",
@@ -144,9 +149,16 @@ class SlizzleController:
 			print(f'Added image Path {image_path}')
 
 	def load_image(self, image_url: str) -> None:
+		"""
+		Loads an image from an url.
+		"""
 		self.image = Image.open(image_url)
 
 	def crop_image(self) -> None:
+		"""
+		Resizes the image to a suitable size for the puzzle game.
+		This is done to avoid small gaps due to rounding errors when slicing the image.
+		"""
 		width, height = self.image.size
 		print(f"width: {width} height: {height}")
 
@@ -160,25 +172,30 @@ class SlizzleController:
 		self.image = self.image.crop((0, 0, width, height))
 
 	def resize_to_minmax(self) -> None:
+		"""
+		Resize the image to a suitable size for a monitor.
+		"""
 		width, height = self.image.size
 
-		if width / MAX_WIDTH > height / MAX_HEIGHT:
-			if width > MAX_WIDTH:    					# crop to max_width
+		factor = 1
+		if width / MAX_WIDTH > height / MAX_HEIGHT:	 # crop to width
+			if width > MAX_WIDTH:
 				factor = width / MAX_WIDTH
-			else:
+			elif width < MIN_WIDTH:
 				factor = width / MIN_WIDTH
-		else:											# crop to max_height
+		else:										 # crop to height
 			if height > MAX_HEIGHT:
 				factor = height / MAX_HEIGHT
-			else:
+			elif height < MIN_HEIGHT:
 				factor = height / MIN_HEIGHT
 
-		print(f"width: {width} height: {height}")
 		width, height = int(width / factor), int(height / factor)
-		print(f"width: {width} height: {height}")
 		self.image = self.image.resize((width, height), Image.ANTIALIAS)
 
 	def slice_image(self, tile_amount: (int, int)) -> list:
+		"""
+		Slices the image into a list of puzzle tiles which will be handed over to the Model.
+		"""
 		self.crop_image()
 		img_width, img_height = self.image.size
 

@@ -16,6 +16,7 @@ def convert_to_pygame_surface(image: Image) -> Surface:
     pygame_image = pygame.image.fromstring(data, size, mode)
     return pygame_image
 
+
 def add_border_to_tile(img) -> Image:
     """
     Helper function for adding a border to an image_tile

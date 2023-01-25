@@ -1,6 +1,6 @@
 from slizzle.model.slizzle_model import Difficulty
 
-# Colors
+# colors
 """
 Source of some Colors: https://colorpalettes.io/cyberpunk-synthwave-color-palette/
 """
@@ -21,11 +21,11 @@ DEFAULT_PICTURE = "assets/loewe.jpg"
 CAPTION = "Slizzzle"
 MENU_RESOLUTION = (500, 500)
 
-# game properties
-DIFFICULTIES = (Difficulty("EASY", 3, 3, 10),
-                Difficulty("MEDIUM", 4, 4, 40),
-                Difficulty("HARD", 5, 5, 100),
-                Difficulty("INSANE", 8, 8, 400))
+# game difficulties
+DIFFICULTIES = (Difficulty("EASY", 3, 3, 31),
+                Difficulty("MEDIUM", 4, 4, 69),
+                Difficulty("HARD", 5, 5, 420),
+                Difficulty("INSANE", 8, 8, 1337))
 
 # resize properties
 MAX_WIDTH = 1280
@@ -40,7 +40,6 @@ BORDER_SIZE = 3
 MENU_BACKGROUND_COLOR = SHADOWN_PLANET
 GAME_BACKGROUND_COLOR = BLACK
 BUTTON_COLOR = PINK_BYTE
-SECONDARY_BUTTON_COLOR = POOL_BLUE
+WIN_BANNER_COLOR = POOL_BLUE
 FONT_COLOR = MIDNIGHT_DREAMS
 GRID_COLOR = BLACK
-
