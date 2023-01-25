@@ -20,9 +20,9 @@ class SlizzleGrid:
 		self.grid = self.tiles_to_grid(tiles)
 
 	def tiles_to_grid(self, tiles_list: list[SlizzleTile]) -> list[list[SlizzleTile]]:
-		""" Returns a [[SlizzleTile],...]
+		""" XXXX
 
-		Used to add Tiles to the X by X Grid.
+
 		"""
 		grid = []
 
@@ -38,7 +38,7 @@ class SlizzleGrid:
 
 		Checks in every direction if a neighbouring cell is invisible.
 		If a neighbouring cell is invisible the clicked cell and invisible cell are swapped using swap() Method.
-		Else returnn false.
+
 		"""
 		x_cord = cell_pos[0]
 		y_cord = cell_pos[1]

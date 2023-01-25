@@ -163,13 +163,11 @@ class SlizzleController:
 		width, height = self.image.size
 
 		if width / MAX_WIDTH > height / MAX_HEIGHT:
-			# crop to max_width
-			if width > MAX_WIDTH:
+			if width > MAX_WIDTH:    					# crop to max_width
 				factor = width / MAX_WIDTH
 			else:
 				factor = width / MIN_WIDTH
-		else:
-			# crop to max_height
+		else:											# crop to max_height
 			if height > MAX_HEIGHT:
 				factor = height / MAX_HEIGHT
 			else:
