@@ -5,7 +5,7 @@ import pygame
 from PIL import Image, ImageOps
 
 import constants
-from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, DEFAULT_PICTURE, GRID_COLOR
+from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH, MIN_HEIGHT, DEFAULT_PICTURE, GRID_COLOR
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
@@ -40,18 +40,33 @@ class SlizzleController:
 	def load_image(self, image_url: str) -> None:
 		self.image = Image.open(image_url)
 
-	def check_resize(self) -> None:
+	def resize_to_minmax(self) -> None:
 		width, height = self.image.size
-		while width > MAX_WIDTH or height > MAX_HEIGHT:
-			width, height = width * SCALE_FACTOR, height * SCALE_FACTOR
-		self.image = self.image.resize((int(width), int(height)), Image.ANTIALIAS)
+
+		if width / MAX_WIDTH > height / MAX_HEIGHT:
+			# crop to max_width
+			if width > MAX_WIDTH:
+				factor = width / MAX_WIDTH
+			else:
+				factor = width / MIN_WIDTH
+		else:
+			# crop to max_height
+			if height > MAX_HEIGHT:
+				factor = height / MAX_HEIGHT
+			else:
+				factor = height / MIN_HEIGHT
+
+		print(f"width: {width} height: {height}")
+		width, height = int(width / factor), int(height / factor)
+		print(f"width: {width} height: {height}")
+		self.image = self.image.resize((width, height), Image.ANTIALIAS)
 
 	def crop_image(self) -> None:
 		width, height = self.image.size
 		print(f"width: {width} height: {height}")
 
-		if width > MAX_WIDTH or height > MAX_HEIGHT:
-			self.check_resize()
+		if width > MAX_WIDTH or height > MAX_HEIGHT or width < MIN_WIDTH or height < MIN_HEIGHT:
+			self.resize_to_minmax()
 			width, height = self.image.size
 
 		width -= (width % self.puzzle_resolution[0])
