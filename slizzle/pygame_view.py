@@ -1,7 +1,7 @@
 import pygame
 
 from constants import CAPTION, ICON, MENU_RESOLUTION, GAME_NAME, MENU_BACKGROUND_COLOR,GAME_BACKGROUND_COLOR,BUTTON_COLOR,SECONDARY_BUTTON_COLOR,FONT_COLOR
-from pil_to_pygame_image import convert_to_pygame_surface
+from helper import convert_to_pygame_surface
 from slizzle.model.slizzle_tile import SlizzleTile
 
 class View:

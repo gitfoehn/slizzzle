@@ -2,11 +2,10 @@ import sys
 from tkinter import filedialog as fd
 
 import pygame
-from PIL import Image, ImageOps
+from PIL import Image
 
-import constants
-from constants import SCALE_FACTOR, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH, MIN_HEIGHT, DEFAULT_PICTURE, GRID_COLOR
-from pil_to_pygame_image import convert_to_pygame_surface
+from constants import MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH, MIN_HEIGHT, DEFAULT_PICTURE, DIFFICULTIES
+from helper import convert_to_pygame_surface, add_border_to_tile
 from slizzle.model.slizzle_model import SlizzleModel
 from slizzle.model.slizzle_tile import SlizzleTile
 from slizzle.pygame_view import View
@@ -26,7 +25,7 @@ class SlizzleController:
 		self.inMenu = True
 		self.running = False
 		self.selected_diff = 0
-		self.puzzle_resolution = constants.DIFFICULTIES[self.selected_diff].res
+		self.puzzle_resolution = DIFFICULTIES[self.selected_diff].res
 
 	def start(self) -> None:
 		while True:
@@ -89,7 +88,7 @@ class SlizzleController:
 					(w * tile_width, h * tile_height, (w + 1) * tile_width, (h + 1) * tile_height))
 
 				# Creates bordered Version
-				pil_img_bord = add_boarder_to_tile(pil_img)
+				pil_img_bord = add_border_to_tile(pil_img)
 				bord_img = convert_to_pygame_surface(pil_img_bord)
 
 				img = convert_to_pygame_surface(pil_img)
@@ -97,82 +96,3 @@ class SlizzleController:
 				tiles.append(tile)
 
 		return tiles
-
-	def load_image_path(self) -> None:
-		image_path = fd.askopenfilename(
-			initialdir="/",
-			title="Choose picture",
-			filetypes=[('Image files', ('*.jpg', '*.png'))])
-		if image_path:
-			self.image = image_path
-			self.load_image(self.image)
-			print(f'Added image Path {self.image}')
-
-	def open_menu(self) -> None:
-		self.view.init_menu_view()
-		while self.inMenu:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					sys.exit()
-				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					if self.view.button_start.rect.collidepoint(event.pos):
-						print('Start button clicked')
-						if self.image is None:
-							self.load_image(constants.DEFAULT_PICTURE)
-						self.inMenu = False
-						self.running = True
-					if self.view.button_difficulty.rect.collidepoint(event.pos):
-						print('Change difficulty')
-						self.selected_diff = (self.selected_diff + 1) % len(constants.DIFFICULTIES)
-					if self.view.button_image_path.rect.collidepoint(event.pos):
-						self.load_image_path()
-			self.view.show_menu_view(constants.DIFFICULTIES[self.selected_diff].name, self.image)
-
-	def start_game(self) -> None:
-		self.puzzle_resolution = constants.DIFFICULTIES[self.selected_diff].res
-		self.model = SlizzleModel(None, constants.DIFFICULTIES[self.selected_diff])
-		tiles = self.slice_image(self.puzzle_resolution)
-		self.model.tiles = tiles
-		self.view.model = self.model
-
-		self.model.start_game()
-		self.view.init_game_view(self.image.size)
-		self.game_loop()
-
-	def end_game(self) -> None:
-		while not self.inMenu and not self.running:
-			self.view.show_end_screen(self.image.size)
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					sys.exit()
-				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					if self.view.button_to_menu.rect.collidepoint(event.pos):
-						self.running = False
-						self.inMenu = True
-
-	def game_loop(self):
-		while self.model.is_running:
-			self.event_handler()
-			self.view.update_grid()
-		self.running = False
-
-	def event_handler(self):
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				sys.exit()
-			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-				pos = pygame.mouse.get_pos()
-				cell = self.get_puzzle_coord_from_pos(pos)
-				print(f'Left Mouse Button was clicked at location {pos} and grid cell {cell}')  # ToDo: Debug
-				self.model.grid_swap(cell)
-
-	def get_puzzle_coord_from_pos(self, pos: (int, int)) -> (int, int):
-		puzzle_view_size = self.image.size
-		# tile.w = view.w / puzzle_res.w
-		tile_size = tuple(
-			(puzzle_view_size[0] / self.puzzle_resolution[0], puzzle_view_size[1] / self.puzzle_resolution[1]))
-		# pos.x % tile.w
-		x = int(pos[0] // tile_size[0])
-		y = int(pos[1] // tile_size[1])
-
-		return tuple((x, y))

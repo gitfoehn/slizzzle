@@ -17,7 +17,7 @@ ICON = 'assets/logo/slizzzle_icon.png'
 GAME_NAME = "assets/logo/schriftzug.png"
 DEFAULT_PICTURE = "assets/loewe.jpg"
 
-# window properties
+# menu properties
 CAPTION = "Slizzzle"
 MENU_RESOLUTION = (500, 500)
 
@@ -28,14 +28,13 @@ DIFFICULTIES = (Difficulty("EASY", 3, 3, 10),
                 Difficulty("INSANE", 8, 8, 400))
 
 # resize properties
-SCALE_FACTOR = 0.95
 MAX_WIDTH = 1280
 MAX_HEIGHT = 720
-MIN_WIDTH = 1280
-MIN_HEIGHT = 720
+MIN_WIDTH = 720
+MIN_HEIGHT = 480
 
 # grid properties
-BOARDER_SIZE = 3
+BORDER_SIZE = 3
 
 # theme
 MENU_BACKGROUND_COLOR = SHADOWN_PLANET
