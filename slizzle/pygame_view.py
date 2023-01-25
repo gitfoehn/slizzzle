@@ -1,8 +1,10 @@
 import pygame
 
-from constants import CAPTION, ICON, MENU_RESOLUTION, Colors, SCHRIFTZUG
+from constants import CAPTION, ICON, MENU_RESOLUTION, SCHRIFTZUG, BACKGROUND_COLOR, BUTTON_COLOR,\
+    SECONDARY_BUTTON_COLOR, FONT_COLOR, MENU_BACKGROUND_COLOR
 from pil_to_pygame_image import convert_to_pygame_surface
 from slizzle.model.slizzle_tile import SlizzleTile
+
 
 class View:
     def __init__(self):
@@ -12,7 +14,7 @@ class View:
         self.button_start = None
         self.button_difficulty = None
         self.button_image_path = None
-        self.button_back_to_menu = None
+        self.button_to_menu = None
 
         pygame.init()
         pygame.display.set_caption(CAPTION)
@@ -25,11 +27,11 @@ class View:
 
     def show_menu_view(self, difficulty_text: str, default_image):
 
-        self.display.fill(Colors.SHADOWN_PLANET)
+        self.display.fill(MENU_BACKGROUND_COLOR)
 
-        self.button_image_path = Button("LOAD IMAGE", Colors.PINK_BYTE, (150, 350), 200, 40)
-        self.button_start = Button("START", Colors.PINK_BYTE, (200, 450), 100, 40)
-        self.button_difficulty = Button(difficulty_text, Colors.PINK_BYTE, (200, 400), 100, 40)
+        self.button_image_path = Button("LOAD IMAGE", BUTTON_COLOR, (150, 350), 200, 40)
+        self.button_start = Button("START", BUTTON_COLOR, (200, 450), 100, 40)
+        self.button_difficulty = Button(difficulty_text, BUTTON_COLOR, (200, 400), 100, 40)
 
         self.button_start.draw(self.display)
         self.button_difficulty.draw(self.display)
@@ -56,7 +58,7 @@ class View:
         self.update_grid()
 
     def update_grid(self) -> None:
-        self.display.fill(Colors.CAMBRIDGE_BLUE)
+        self.display.fill(BACKGROUND_COLOR)
 
         grid = self.model.grid
         for x in range(len(grid.grid)):
@@ -76,7 +78,7 @@ class View:
         window_x, window_y = window_dimensions
 
         label_text = f"You made it in {self.model.moves} move(s)."
-        label_banner = pygame.font.Font(None, 36).render(label_text, True, Colors.MIDNIGHT_DREAMS)
+        label_banner = pygame.font.Font(None, 36).render(label_text, True, FONT_COLOR)
 
         banner_width = label_banner.get_rect().width + 20
         banner_height = label_banner.get_rect().height + 20
@@ -95,12 +97,12 @@ class View:
         x_button = window_x // 2 - button_width // 2
         y_button = banner_y + banner_height + 10
 
-        pygame.draw.rect(self.display, Colors.POOL_BLUE, banner)
+        pygame.draw.rect(self.display, SECONDARY_BUTTON_COLOR, banner)
 
         self.display.blit(label_banner, (x_label, y_label))
         button_text = f"BACK TO MENU"
-        self.button_back_to_menu = Button(button_text, Colors.POOL_BLUE, (x_button, y_button), button_width, button_height)
-        self.button_back_to_menu.draw(self.display)
+        self.button_to_menu = Button(button_text, SECONDARY_BUTTON_COLOR, (x_button, y_button), button_width, button_height)
+        self.button_to_menu.draw(self.display)
         pygame.display.flip()
 
 
@@ -120,9 +122,9 @@ class Button:
         self.rect = pygame.Rect(self.x, self.y, width, height)
 
     def draw(self, surface: pygame.Surface) -> None:
-        label_elem = pygame.font.Font(None, 36).render(self.label, True, Colors.MIDNIGHT_DREAMS)
+        label_elem = pygame.font.Font(None, 36).render(self.label, True, FONT_COLOR)
 
-        pygame.draw.rect(surface, Colors.PINK_BYTE, self.rect)
+        pygame.draw.rect(surface, BUTTON_COLOR, self.rect)
         surface.blit(label_elem, (self.rect.x + self.rect.width // 2 - label_elem.get_rect().width // 2,
                                   self.rect.y + self.rect.height // 2 - label_elem.get_rect().height // 2))
 

@@ -131,7 +131,7 @@ class SlizzleController:
 				if event.type == pygame.QUIT:
 					sys.exit()
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					if self.view.button_back_to_menu.rect.collidepoint(event.pos):
+					if self.view.button_to_menu.rect.collidepoint(event.pos):
 						self.running = False
 						self.inMenu = True
 
